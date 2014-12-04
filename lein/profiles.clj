@@ -4,29 +4,33 @@
 
  :cider
  {:plugins
-  [ [cider/cider-nrepl "0.7.0"] ]
-  :dependencies [[org.clojure/tools.nrepl "0.2.5"] ]
+  [[cider/cider-nrepl "0.8.1"]  ]
+  :dependencies
+  [[org.clojure/tools.nrepl "0.2.6"]]
+  :jvm-opts ["-Dapple.awt.UIElement=true"] ; hide java icon in OSX dock
   }
 
  :power
  {
-
   :plugins
   [[lein-midje "3.1.3"] ; better testing
-   [cider/cider-nrepl "0.7.0"] ; cider repl integration
+   [cider/cider-nrepl "0.8.1"] ; cider repl integration
+ ;  [refactor-nrepl "0.1.0"] ; clj-refactor integration
    [lein-ns-dep-graph "0.1.0-SNAPSHOT" :exclusions [org.clojure/clojure]] ; namespace dependency graphs
    [lein-kibit "0.0.8" :exclusions [org.clojure/clojure]] ; static code analysis
-   [lein-drip "0.1.1-SNAPSHOT"] ; jvm launch accelarator
    [jonase/eastwood "0.1.4" :exclusions [org.clojure/clojure]] ; linter
-   [lein-ancient "0.5.5"  :exclusions [org.clojure/clojure]]
-   [lein-localrepo "0.5.3"]]
+   [lein-drip "0.1.1-SNAPSHOT"] ; jvm launch accelarator
+   [lein-ancient "0.5.5"  :exclusions [org.clojure/clojure]] ; dependency update checker
+   [lein-localrepo "0.5.3"] ; installs artifacts in local maven repo
+   ]
 
   :jvm-opts ["-Dapple.awt.UIElement=true"] ; hide java icon in OSX dock
 
   :dependencies
-  [[org.clojure/tools.namespace "0.2.7"]
+  [[org.clojure/tools.nrepl "0.2.6"]
+   [org.clojure/tools.namespace "0.2.7"]
    [aprint "0.1.0" :exclusions [org.clojure/clojure]]
-   [leiningen #=(leiningen.core.main/leiningen-version)  :exclusions [org.clojure/clojure]]
+   #_[leiningen #=(leiningen.core.main/leiningen-version)  :exclusions [org.clojure/clojure]]
    [spyscope "0.1.4"  :exclusions [org.clojure/clojure]] ; tracing tools
    [io.aviso/pretty "0.1.12"] ; better pretty printing
    [im.chit/iroh "0.1.11"  :exclusions [org.clojure/clojure]] ; java reflection tools
@@ -47,7 +51,7 @@
 
     ;; note that `:refer, :all and :exclude can be used
     [vinyasa.inject :refer [inject [in inject-in]]]
-    [vinyasa.lein :exclude [*project*]]
+    #_[vinyasa.lein :exclude [*project*]]
 
     [user :refer [trace trace-env]]
 
@@ -71,15 +75,16 @@
     [clojure.java.shell sh])
 
    ;; clearer exceptions/stack-traces
-   (alter-var-root #'clojure.main/repl-caught
-                   (constantly @#'io.aviso.repl/pretty-pst))
 
-   (io.aviso.repl/install-pretty-exceptions)]}
+   #_(alter-var-root #'clojure.main/repl-caught
+                     (constantly @#'io.aviso.repl/pretty-pst))
+   #_(io.aviso.repl/install-pretty-exceptions)
+   ]
 
-:repl-options
- {:nrepl-middleware [io.aviso.nrepl/pretty-middleware]
-  :init
+  :repl-options
+  {#_:nrepl-middleware #_[ io.aviso.nrepl/pretty-middleware]
+   :init
    (do
-     (use '[clojure.repl :only (dir-fn doc source)]))}
+     (use '[clojure.repl :only (dir-fn doc source)]))}}
 
 }
