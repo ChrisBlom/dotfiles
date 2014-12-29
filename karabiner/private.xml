@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<root>
+
+
+  <item>
+    <name>Shifts to Parentheses with Modifier Flags</name>
+    <appendix>Shifts, when pressed alone, type parentheses.  When used with other keys they're normal shifts.</appendix>
+
+    <identifier>private.shifts_to_parens_w_modifiers</identifier>
+
+    <!-- This is the basic mapping. -->
+    <autogen>--KeyOverlaidModifier-- KeyCode::SHIFT_R, ModifierFlag::SHIFT_R | ModifierFlag::NONE, KeyCode::SHIFT_R, KeyCode::KEY_0, ModifierFlag::SHIFT_L</autogen>
+    <autogen>--KeyOverlaidModifier-- KeyCode::SHIFT_L, ModifierFlag::SHIFT_L | ModifierFlag::NONE, KeyCode::SHIFT_L, KeyCode::KEY_9, ModifierFlag::SHIFT_R</autogen>
+
+    <!-- Ctrl+LShift maps to Ctrl-( -->
+    <autogen>--KeyOverlaidModifier-- KeyCode::SHIFT_L, ModifierFlag::SHIFT_L, ModifierFlag::CONTROL_R | ModifierFlag::NONE, KeyCode::CONTROL_R, KeyCode::SHIFT_L, KeyCode::KEY_0, ModifierFlag::SHIFT_L, ModifierFlag::CONTROL_R</autogen>
+    <autogen>--KeyOverlaidModifier-- KeyCode::SHIFT_L, ModifierFlag::SHIFT_L, ModifierFlag::CONTROL_L | ModifierFlag::NONE, KeyCode::CONTROL_L, KeyCode::SHIFT_L, KeyCode::KEY_0, ModifierFlag::SHIFT_L, ModifierFlag::CONTROL_L</autogen>
+
+    <!-- Ctrl+RShift maps to Ctrl-) -->
+    <autogen>--KeyOverlaidModifier-- KeyCode::SHIFT_R, ModifierFlag::SHIFT_R, ModifierFlag::CONTROL_R | ModifierFlag::NONE, KeyCode::CONTROL_R, KeyCode::SHIFT_R, KeyCode::KEY_9, ModifierFlag::SHIFT_R, ModifierFlag::CONTROL_R</autogen>
+    <autogen>--KeyOverlaidModifier-- KeyCode::SHIFT_R, ModifierFlag::SHIFT_R, ModifierFlag::CONTROL_L | ModifierFlag::NONE, KeyCode::CONTROL_L, KeyCode::SHIFT_R, KeyCode::KEY_9, ModifierFlag::SHIFT_R, ModifierFlag::CONTROL_L</autogen>
+
+    <!-- Alt+LShift maps to Alt-( -->
+    <autogen>--KeyOverlaidModifier-- KeyCode::SHIFT_L, ModifierFlag::SHIFT_L, ModifierFlag::OPTION_R | ModifierFlag::NONE, KeyCode::OPTION_R, KeyCode::SHIFT_L, KeyCode::KEY_0, ModifierFlag::SHIFT_L, ModifierFlag::OPTION_R</autogen>
+    <autogen>--KeyOverlaidModifier-- KeyCode::SHIFT_L, ModifierFlag::SHIFT_L, ModifierFlag::OPTION_L | ModifierFlag::NONE, KeyCode::OPTION_L, KeyCode::SHIFT_L, KeyCode::KEY_0, ModifierFlag::SHIFT_L, ModifierFlag::OPTION_L</autogen>
+
+    <!-- Alt+RShift maps to Alt-) -->
+    <autogen>--KeyOverlaidModifier-- KeyCode::SHIFT_R, ModifierFlag::SHIFT_R, ModifierFlag::OPTION_R | ModifierFlag::NONE, KeyCode::OPTION_R, KeyCode::SHIFT_R, KeyCode::KEY_9, ModifierFlag::SHIFT_R, ModifierFlag::OPTION_R</autogen>
+    <autogen>--KeyOverlaidModifier-- KeyCode::SHIFT_R, ModifierFlag::SHIFT_R, ModifierFlag::OPTION_L | ModifierFlag::NONE, KeyCode::OPTION_L, KeyCode::SHIFT_R, KeyCode::KEY_9, ModifierFlag::SHIFT_R, ModifierFlag::OPTION_L</autogen>
+
+    <!-- Command+LShift maps to Command-( -->
+    <autogen>--KeyOverlaidModifier-- KeyCode::SHIFT_L, ModifierFlag::SHIFT_L, ModifierFlag::COMMAND_R | ModifierFlag::NONE, KeyCode::COMMAND_R, KeyCode::SHIFT_L, KeyCode::KEY_0, ModifierFlag::SHIFT_L, ModifierFlag::COMMAND_R</autogen>
+    <autogen>--KeyOverlaidModifier-- KeyCode::SHIFT_L, ModifierFlag::SHIFT_L, ModifierFlag::COMMAND_L | ModifierFlag::NONE, KeyCode::COMMAND_L, KeyCode::SHIFT_L, KeyCode::KEY_0, ModifierFlag::SHIFT_L, ModifierFlag::COMMAND_L</autogen>
+
+    <!-- Command+RShift maps to Command-) -->
+    <autogen>--KeyOverlaidModifier-- KeyCode::SHIFT_R, ModifierFlag::SHIFT_R, ModifierFlag::COMMAND_R | ModifierFlag::NONE, KeyCode::COMMAND_R, KeyCode::SHIFT_R, KeyCode::KEY_9, ModifierFlag::SHIFT_R, ModifierFlag::COMMAND_R</autogen>
+    <autogen>--KeyOverlaidModifier-- KeyCode::SHIFT_R, ModifierFlag::SHIFT_R, ModifierFlag::COMMAND_L | ModifierFlag::NONE, KeyCode::COMMAND_L, KeyCode::SHIFT_R, KeyCode::KEY_9, ModifierFlag::SHIFT_R, ModifierFlag::COMMAND_L</autogen>
+
+
+    <!-- Control+Alt+LShift maps to Control+Alt-( -->
+    <!-- Cr Mr -->
+    <autogen> --KeyOverlaidModifier--
+    KeyCode::SHIFT_L, ModifierFlag::SHIFT_L, ModifierFlag::CONTROL_R, ModifierFlag::OPTION_R
+    |
+    ModifierFlag::NONE, KeyCode::CONTROL_R, KeyCode::OPTION_R, KeyCode::SHIFT_L, KeyCode::KEY_0, ModifierFlag::SHIFT_L, ModifierFlag::CONTROL_R, ModifierFlag::OPTION_R
+    </autogen>
+    <!-- Cl Mr -->
+    <autogen> --KeyOverlaidModifier--
+    KeyCode::SHIFT_L, ModifierFlag::SHIFT_L, ModifierFlag::CONTROL_L, ModifierFlag::OPTION_R
+    |
+    ModifierFlag::NONE, KeyCode::CONTROL_L, KeyCode::OPTION_R, KeyCode::SHIFT_L, KeyCode::KEY_0, ModifierFlag::SHIFT_L, ModifierFlag::CONTROL_L, ModifierFlag::OPTION_R
+    </autogen>
+    <!-- Cr Ml -->
+    <autogen> --KeyOverlaidModifier--
+    KeyCode::SHIFT_L, ModifierFlag::SHIFT_L, ModifierFlag::CONTROL_R, ModifierFlag::OPTION_L
+    |
+    ModifierFlag::NONE, KeyCode::CONTROL_R, KeyCode::OPTION_L, KeyCode::SHIFT_L, KeyCode::KEY_0, ModifierFlag::SHIFT_L, ModifierFlag::CONTROL_R, ModifierFlag::OPTION_L
+    </autogen>
+    <!-- Cl Ml -->
+    <autogen> --KeyOverlaidModifier--
+    KeyCode::SHIFT_L, ModifierFlag::SHIFT_L, ModifierFlag::CONTROL_L, ModifierFlag::OPTION_L
+    |
+    ModifierFlag::NONE, KeyCode::CONTROL_L, KeyCode::OPTION_L, KeyCode::SHIFT_L, KeyCode::KEY_0, ModifierFlag::SHIFT_L, ModifierFlag::CONTROL_L, ModifierFlag::OPTION_L
+    </autogen>
+
+    <!--
+        Remap the "rolls" of () and )( because it's too easy to hit one
+        before finishing the other, and there's no other reason to be
+        pressing both shift keys at once anyway
+    -->
+    <autogen>--KeyToKey-- KeyCode::SHIFT_L, ModifierFlag::SHIFT_R, KeyCode::KEY_0, ModifierFlag::SHIFT_L, KeyCode::KEY_9, ModifierFlag::SHIFT_L</autogen>
+    <autogen>--KeyToKey-- KeyCode::SHIFT_R, ModifierFlag::SHIFT_L, KeyCode::KEY_9, ModifierFlag::SHIFT_L, KeyCode::KEY_0, ModifierFlag::SHIFT_L</autogen>
+
+    <!--
+        Remap Rshift+Space to ') ', because when typing an end paren and
+        then a space I tend to hit space before I let go of rshift.
+    -->
+    <autogen>--KeyToKey-- KeyCode::SPACE, ModifierFlag::SHIFT_R, KeyCode::KEY_0, ModifierFlag::SHIFT_L, KeyCode::SPACE</autogen>
+
+  </item>
+
+
+ <item>
+      <name>FN and right control to []</name>
+      <appendix>When pressed alone, Left Control types less symbol &lt;</appendix>
+      <appendix>When pressed alone, Right Control types greater symbol &gt;</appendix>
+      <appendix>When used with other keys, they're normal Controls.</appendix>
+      <identifier>remap.programmer.controls_angle_brackets2</identifier>
+      <!-- This is the basic mapping. -->
+      <autogen>__KeyOverlaidModifier__ KeyCode::CONTROL_R, ModifierFlag::CONTROL_R | ModifierFlag::NONE, KeyCode::CONTROL_R, KeyCode::BRACKET_RIGHT</autogen>
+      <autogen>__KeyOverlaidModifier__ KeyCode::CONTROL_L, ModifierFlag::CONTROL_L | ModifierFlag::NONE, KeyCode::CONTROL_L,  KeyCode::BRACKET_LEFT</autogen>
+      <autogen>__KeyOverlaidModifier__ KeyCode::CONTROL_R, ModifierFlag::CAPSLOCK, KeyCode::CONTROL_R, KeyCode::DOT, ModifierFlag::SHIFT_L</autogen>
+      <autogen>__KeyOverlaidModifier__ KeyCode::CONTROL_L, ModifierFlag::CAPSLOCK, KeyCode::CONTROL_L, KeyCode::COMMA, ModifierFlag::SHIFT_R</autogen>
+      <!-- Pushing Controls together produces [] -->
+      <autogen>__KeyToKey__ KeyCode::CONTROL_L, ModifierFlag::CONTROL_R, KeyCode::BRACKET_LEFT, KeyCode::BRACKET_RIGHT, </autogen>
+      <autogen>__KeyToKey__ KeyCode::CONTROL_R, ModifierFlag::CONTROL_L,  KeyCode::BRACKET_LEFT,  KeyCode::BRACKET_RIGHT</autogen>
+    </item>
+
+
+</root>
