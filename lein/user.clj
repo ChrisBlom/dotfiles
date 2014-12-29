@@ -120,3 +120,11 @@
 (defmacro undef [name]
   (ns-unmap (or (some-> name namespace symbol) *ns*)
             name))
+
+
+(defmacro add-dep
+  [ [lib release] ]
+  (cemerick.pomegranate/add-dependencies
+   :coordinates [[lib release]]
+   :repositories {"clojars" "http://clojars.org/repo"
+                  "central" "http://repo1.maven.org/maven2/"}))
