@@ -4,7 +4,7 @@
 
  :cider
  {:plugins
-  [[cider/cider-nrepl "0.8.1"]  ]
+  [[cider/cider-nrepl "0.8.2"]  ]
   :dependencies
   [[org.clojure/tools.nrepl "0.2.6"]]
   :jvm-opts ["-Dapple.awt.UIElement=true"] ; hide java icon in OSX dock
@@ -14,7 +14,7 @@
  {
   :plugins
   [[lein-midje "3.1.3"] ; better testing
-   [cider/cider-nrepl "0.8.1"] ; cider repl integration
+   [cider/cider-nrepl "0.8.2"] ; cider repl integration
  ;  [refactor-nrepl "0.1.0"] ; clj-refactor integration
    [lein-ns-dep-graph "0.1.0-SNAPSHOT" :exclusions [org.clojure/clojure]] ; namespace dependency graphs
    [lein-kibit "0.0.8" :exclusions [org.clojure/clojure]] ; static code analysis
@@ -59,6 +59,7 @@
 
     ;; imports all functions in vinyasa.pull
     [vinyasa.pull :all]
+
 
     [cemerick.pomegranate add-classpath get-classpath resources]
 
