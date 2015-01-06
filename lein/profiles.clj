@@ -18,7 +18,7 @@
  ;  [refactor-nrepl "0.1.0"] ; clj-refactor integration
    [lein-ns-dep-graph "0.1.0-SNAPSHOT" :exclusions [org.clojure/clojure]] ; namespace dependency graphs
    [lein-kibit "0.0.8" :exclusions [org.clojure/clojure]] ; static code analysis
-   [jonase/eastwood "0.1.4" :exclusions [org.clojure/clojure]] ; linter
+   [jonase/eastwood "0.2.1" :exclusions [org.clojure/clojure]] ; linter
    [lein-drip "0.1.1-SNAPSHOT"] ; jvm launch accelarator
    [lein-ancient "0.5.5"  :exclusions [org.clojure/clojure]] ; dependency update checker
    [lein-localrepo "0.5.3"] ; installs artifacts in local maven repo
