@@ -36,42 +36,48 @@
 (defn print-table
   ([table] (print-table table (repeat \space)))
   ([table separators]
-     (let [separators (concat separators (repeat \space))
-           padding (->> table
-                        transpose
-                        (map (comp (partial reduce max 0)
-                                (partial map (comp count str))) ,,,))]
-       (doseq [ row table]
-          (println
-           (->> (map (fn [s p]
-                       (let [ss (str s)]
-                         (str ss (apply str (take (- p (count ss)) (repeat \space))))))
-                     (concat row [ ""])
-                     (concat padding [0]))
-                (interleave separators)
-                (apply str)))))))
-
-(comment
-  (print-table
-   [ [:a "bar" "baz"]
-     [:foo 2 "1"]
-     ]
-   [" " " = " " :: "])
-
-
-  (print-table
-   [  [:a  (assoc-in {} "asdadsdasdasdadsasda" 1) "b"]]
-   (repeat " | ")
-   ))
-
-(defmacro with-e [ t & body]
-  `(binding [*trace*  t]
-     ~@body))
+   (let [separators (concat separators (repeat \space))
+         padding (->> table
+                      transpose
+                      (map (comp (partial reduce max 0)
+                                 (partial map (comp count str))) ,,,))]
+     (doseq [ row table]
+       (println
+        (->> (map (fn [s p]
+                    (let [ss (str s)]
+                      (str ss (apply str (take (- p (count ss)) (repeat \space))))))
+                  (concat row [ ""])
+                  (concat padding [0]))
+             (interleave separators)
+             (apply str)))))))
 
 (defmacro trace [ & vals]
-  `(do
-     (when *trace*
-       (printf "--Trace ---%n"  )
+  `(when *trace*
+     (printf "--Trace ---%n"  )
+     (let [symbol->val# (map vector (quote ~vals) (list ~@vals))
+           l#           (->> symbol->val#
+                             (map (comp count pr-str first))
+                             (apply max))
+           indent#      (-> l#
+                            (+ 2)
+                            (repeat \space)
+                            (->> ,,, (apply str)))]
+       (doseq [ [k# v#] symbol->val#]
+         (println (pad l# (pr-str k#))
+                  "="
+                  (clojure.string/replace
+                   (apply str (butlast (with-out-str (ppr v#)))) ; trim last newline
+                   #"\n"
+                   (str "\n" indent#))
+                  " :: "
+                  (type v#)
+                  )))
+     (println "---------------")))
+
+(defmacro trace-env [ & vals]
+  (let [vals (concat (or vals '()) (keys &env))]
+    `(when *trace*
+       (printf "--Trace-env ---%n"  )
        (let [symbol->val# (map vector (quote ~vals) (list ~@vals))
              l#           (->> symbol->val#
                                (map (comp count pr-str first))
@@ -79,7 +85,7 @@
              indent#      (-> l#
                               (+ 2)
                               (repeat \space)
-                              (->> ,,, (apply str)))]
+                              (->> (apply str)))]
          (doseq [ [k# v#] symbol->val#]
            (println (pad l# (pr-str k#))
                     "="
@@ -91,31 +97,6 @@
                     (type v#)
                     )))
        (println "---------------"))))
-
-(defmacro trace-env [ & vals]
-  (let [vals (concat (or vals '()) (keys &env))]
-    `(do
-       (when *trace*
-         (printf "--Trace ---%n"  )
-         (let [symbol->val# (map vector (quote ~vals) (list ~@vals))
-               l#           (->> symbol->val#
-                                 (map (comp count pr-str first))
-                                 (apply max))
-               indent#      (-> l#
-                                (+ 2)
-                                (repeat \space)
-                                (->> ,,, (apply str)))]
-           (doseq [ [k# v#] symbol->val#]
-             (println (pad l# (pr-str k#))
-                      "="
-                      (clojure.string/replace
-                       (apply str (butlast (with-out-str (ppr v#)))) ; trim last newline
-                       #"\n"
-                       (str "\n" indent#))
-                      " :: "
-                      (type v#)
-                      )))
-         (println "---------------")))))
 
 (defmacro undef [name]
   (ns-unmap (or (some-> name namespace symbol) *ns*)
