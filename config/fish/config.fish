@@ -1,5 +1,5 @@
-# set all env vars :
-for pair in (cat  ~/.config/env_vars);
+# set all env vars t:
+for pair in (cat ~/.config/env_vars);
         set var (echo $pair | awk '{print $1}')
         set value (echo $pair | awk '{print $2}')
         #echo "setting $var to $value"
@@ -10,7 +10,6 @@ end;
 # Use 256 color terminal
 set -x TERM xterm-256color
 set TERM xterm-256color
-
 
 function fish_title
   true
