@@ -1,9 +1,20 @@
 (ns tracetool
   (:require
+   [cemerick.pomegranate]
    [clojure.pprint]
-   [cemerick.pomegranate]))
+   [clojure.string :as str]))
 
 (defmacro show-env [] (println &env))
+
+
+(def pid
+  "Get current process PID"
+  (memoize
+   (fn []
+     (-> (java.lang.management.ManagementFactory/getRuntimeMXBean)
+         (.getName)
+         (clojure.string/split #"@")
+         (first)))))
 
 (defn ppr
   ([title x]
