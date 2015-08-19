@@ -4,7 +4,7 @@
 [push]
 	default = simple
 [core]
-	editor = eg
+	editor = vim
 	excludesfile = /Users/chris/.gitignore
 [credential]
 	helper = osxkeychain
@@ -20,7 +20,10 @@
 	trustExitCode = true
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
+	path =
 [mergetool "sourcetree"]
 	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
+
+[init]
+	templatedir = /Users/chris/git/dotfiles/git/templatedir
