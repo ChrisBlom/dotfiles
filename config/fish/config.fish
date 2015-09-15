@@ -7,6 +7,9 @@ for pair in (cat ~/.config/env_vars);
         launchctl setenv $var $value
 end;
 
+eval (docker-machine env docker)
+
+
 # Use 256 color terminal
 set -x TERM xterm-256color
 set TERM xterm-256color

@@ -67,7 +67,8 @@
 (defmacro trace [ & vals]
   `(do (when *trace*
          (printf "--Trace ---%n"  )
-         (let [symbol->val# (map vector (quote ~vals) (list ~@vals))
+         (let [vals#        (vector ~@vals)
+               symbol->val# (map vector (quote ~vals) vals#)
                l#           (->> symbol->val#
                                  (map (comp count pr-str first))
                                  (apply max))
@@ -84,9 +85,9 @@
                        (str "\n" indent#))
                       " :: "
                       (type v#)
-                      )))
-         (println "---------------"))
-       ~(last vals)))
+                      ))
+           (println "---------------")
+           (last vals#)))))
 
 (defmacro label-trace [ label & vals]
   `(do (when *trace*
