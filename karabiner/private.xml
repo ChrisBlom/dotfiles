@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <root>
 
-
   <item>
     <name>Shifts to Parentheses with Modifier Flags</name>
     <appendix>Shifts, when pressed alone, type parentheses.  When used with other keys they're normal shifts.</appendix>
@@ -37,7 +36,7 @@
       KeyCode::KEY_0, ModifierFlag::SHIFT_L, KeyCode::KEY_9, ModifierFlag::SHIFT_L
     </autogen>
 
-)    <!-- Ctrl+LShift maps to Ctrl-( -->
+    <!-- Ctrl+LShift maps to Ctrl-( -->
     <autogen>
       --KeyOverlaidModifier--
       KeyCode::SHIFT_L, ModifierFlag::SHIFT_L, ModifierFlag::CONTROL_L | ModifierFlag::NONE,
@@ -130,6 +129,23 @@
   </item>
 
   <item>
+    <name>Space to Control</name>
+    <appendix>When pressed alone, space inserts a space</appendix>
+    <appendix>When used with other keys, acts as Ctrl</appendix>
+    <identifier>remap.programmer.spacetocontrol</identifier>
+    <!-- Space to control -->
+
+
+
+
+
+    <autogen>__KeyOverlaidModifierWithRepeat__ KeyCode::SPACE, KeyCode::CONTROL_L, KeyCode::SPACE</autogen>
+
+
+  </item>
+
+
+  <item>
     <name>FN and right control to []</name>
     <appendix>When pressed alone, Left Control types less symbol &lt;</appendix>
     <appendix>When pressed alone, Right Control types greater symbol &gt;</appendix>
@@ -144,6 +160,8 @@
     <autogen>__KeyToKey__ KeyCode::CONTROL_L, ModifierFlag::CONTROL_R, KeyCode::BRACKET_LEFT, KeyCode::BRACKET_RIGHT, </autogen>
     <autogen>__KeyToKey__ KeyCode::CONTROL_R, ModifierFlag::CONTROL_L,  KeyCode::BRACKET_LEFT,  KeyCode::BRACKET_RIGHT</autogen>
   </item>
+
+
 
 
 </root>
