@@ -158,6 +158,16 @@
    ((var-get (resolve 'taoensso.timbre/set-level!)) level)))
 
 
+(defn clear-ns []
+  (doall
+   (for [ [s to] (.getMappings *ns*)
+         :when (not (class? to))
+         :when (not (= 'clojure.core (.-name (.-ns to))))]
+     (do  (println "Unmapping" s)
+          (.unmap *ns* s)
+          s))))
+
+
 (defn diff
   ([before after] (zipmap [:before :after :same] (d/diff before after)))
   ([before-label after-label before after] (zipmap [before-label after-label] (d/diff before after)))
