@@ -6,3 +6,5 @@ config/fish/fishd.b8e8564a5c38
 config/gcloud
 /lein/.profiles.clj.~undo-tree~
 /lein/.tracetool.clj.~undo-tree~
+/gitconfig
+/lein/self-installs/leiningen-2.5.0-standalone.jar
