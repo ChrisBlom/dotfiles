@@ -186,3 +186,25 @@
       (println "done")))
 
 ;; trace-let
+(defn- ->debug-sym [n] (symbol (str "<" (name n) ">")))
+
+(defmacro capture-locals [n]
+  (let [locals (keys &env)
+        lname (->debug-sym n)]
+    `(def ~lname (zipmap '~locals (list ~@locals)))))
+
+(defmacro with-locals [n & body]
+  (let [m @(resolve (->debug-sym n))]
+    `(let ~(vec (mapcat identity m))
+       ~@body)))
+
+(comment
+
+  (let [x 1 y 2 z 3]
+    (capture-locals A)
+    (+ x y z))
+
+  (with-locals A
+    (+ x y z))
+
+  )
