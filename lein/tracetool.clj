@@ -151,6 +151,12 @@
 (defmacro undef [name]
   (ns-unmap (or (some-> name namespace symbol) *ns*)
             name))
+(defn ll
+  ([] (ll :warn))
+  ([level]
+   (set! *warn-on-reflection* false)
+   ((var-get (resolve 'taoensso.timbre/set-level!)) level)))
+
 
 (defn diff
   ([before after] (zipmap [:before :after :same] (d/diff before after)))
