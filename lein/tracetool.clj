@@ -1,8 +1,8 @@
 (ns tracetool
   (:require
-   [cemerick.pomegranate]
-   [clojure.pprint]
-   [clojure.string :as str]))
+    [clojure.pprint]
+    [clojure.string :as str]
+    [clojure.data :as d]))
 
 (defmacro show-env [] (println &env))
 
@@ -151,6 +151,12 @@
 (defmacro undef [name]
   (ns-unmap (or (some-> name namespace symbol) *ns*)
             name))
+
+(defn diff
+  ([before after] (zipmap [:before :after :same] (d/diff before after)))
+  ([before-label after-label before after] (zipmap [before-label after-label] (d/diff before after)))
+  ([before-label after-label same-label before after] (zipmap [before-label after-label same-label] (d/diff before after))))
+
 
 #_(defmacro add-lib [ [lib version] ]
     (let [ coord   [lib version] ]
