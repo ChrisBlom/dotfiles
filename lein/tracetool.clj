@@ -230,3 +230,87 @@
     (+ x y z))
 
   )
+
+(defn ns->ms [nanos]
+  (/ nanos 1000000.0))
+
+(defonce instrumented-vars
+  (atom #{}))
+
+(defn instrumented? [v]
+  (boolean (::instrumented (meta v))))
+
+(defn uninstrument [v]
+  (when-let [original (::instrumented (meta v))]
+    (do (alter-var-root v (constantly original))
+        (swap! instrumented-vars conj v)
+        (alter-meta! v dissoc ::instrumented)
+        :disabled)))
+
+(defn wrap-instrument [v store f]
+  (fn [& args]
+    (let [start (System/nanoTime)
+          result (apply f args)
+          end (System/nanoTime)]
+      (println "Time:" v (ns->ms (- end start)))
+      (swap! store conj [start end])
+      result)))
+
+(defn instrument [v]
+  (when-not (::instrumented (meta v))
+    (let [original @v
+          store (atom {})
+          instrumented (wrap-instrument v store original)]
+      (do (alter-var-root v (constantly instrumented))
+          (swap! instrumented-vars conj v)
+          (alter-meta! v assoc
+                       ::instrumented original
+                       ::store store)
+          :enabled))))
+
+(defn summary [p]
+  (let [start (ns->ms (apply min (map first p)))
+        end   (ns->ms (apply max (map second p)))
+        durations (map (fn [[start end]] (- end start)) p)
+        sums (apply + durations)]
+    {:timespan (- end start)
+     :duration-sums (ns->ms sums)
+     :mean-duration (ns->ms (/ sums
+                               (count durations)))}))
+
+(defn instrument-report [v]
+  (if-not (instrumented? v)
+    :not-instrumented
+    (summary @(::store (meta v)))))
+
+(defn toggle-instrument [v]
+  (assert (var? v) "Can only instrument vars")
+  (assert (fn? @v) "Can only instrument vars pointing to functions")
+  (if (instrumented? v)
+    (uninstrument v)
+    (instrument v)))
+
+(defn uninstrument-all []
+  (doseq [v @instrumented-vars]
+    (uninstrument v)))
+
+(defn uninstrument-ns [ns]
+  ( 'tracetool)
+  (doseq [v @instrumented-vars]
+    (uninstrument v)))
+
+(defn instrument-ns [ns]
+  (for [v (vals (.getMappings (create-ns ns)))
+        :when (var? v)
+        :when (=   (.-name (.-ns v)) ns)
+        :when (fn? @v)
+        ]
+    (instrument v)))
+
+(defn uninstrument-ns [ns]
+  (for [v (vals (.getMappings (create-ns ns)))
+        :when (var? v)
+        :when (=   (.-name (.-ns v)) ns)
+        :when (fn? @v)
+        ]
+    (uninstrument v)))

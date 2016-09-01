@@ -50,7 +50,8 @@
    ;; inject utility fns in the '.' namespace
    (inject/in ;; the default injected namespace is `.`
     [vinyasa.inject :refer [inject [in inject-in]]]
-    [tracetool :refer [trace trace-env *trace* defn-trace no-trace ll undef clear-ns pid diff time]]
+    [tracetool :refer [trace trace-env *trace* defn-trace no-trace ll undef clear-ns pid diff time toggle-instrument
+                       *dbg* dbg-true dbg-false dbg? capture instrument uninstrument instrument-report]]
     [clojure.pprint :refer [pprint pp]]
     [clojure.repl :refer [dir-fn doc source]]
     [clojure.java.shell :refer [sh]]
