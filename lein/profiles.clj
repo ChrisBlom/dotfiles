@@ -7,7 +7,7 @@
 
  :cider
  {:plugins
-  [[cider/cider-nrepl "0.12.0"] ]
+  [[cider/cider-nrepl "0.13.0"] ]
   :dependencies
   [[org.clojure/tools.nrepl "0.2.12"]]
                                         ; hide java icon in OSX dock
@@ -22,13 +22,9 @@
 
  :power
  {:plugins
-  [[cider/cider-nrepl "0.12.0"] ; cider repl integration
-   [refactor-nrepl "2.2.0"]
-                                        ;[lein-ring "0.9.7"]
+  [[cider/cider-nrepl "0.13.0"] ; cider repl integration
+   [refactor-nrepl "2.3.0-SNAPSHOT"]
    [lein-ancient "0.6.10"  :exclusions [org.clojure/clojure]] ; dependency update checker
-   ;; [lein-localrepo "0.5.3" :exclusions [org.clojure/clojure]] ; installs artifacts in local maven repo
-   [lein-localrepo "0.5.3"]
-   [dep-graph "0.1.0"]
    ]
 
   :jvm-opts ["-Dapple.awt.UIElement=true"  ; hide java icon in OSX dock
@@ -46,12 +42,14 @@
   [(require '[vinyasa.inject :as inject])
    (require 'alembic.still)
    (load-file (str (System/getProperty "user.home") "/.lein/tracetool.clj"))
-
    ;; inject utility fns in the '.' namespace
    (inject/in ;; the default injected namespace is `.`
     [vinyasa.inject :refer [inject [in inject-in]]]
-    [tracetool :refer [trace trace-env *trace* defn-trace no-trace ll undef clear-ns pid diff time toggle-instrument
-                       *dbg* dbg-true dbg-false dbg? capture instrument uninstrument instrument-report]]
+    [tracetool :refer [trace trace-env *trace* defn-trace no-trace ll undef clear-ns pid diff
+                       time! toggle-timed!
+                       clear-times untime-all
+                       ;; capture instrument uninstrument instrument-report
+                       ]]
     [clojure.pprint :refer [pprint pp]]
     [clojure.repl :refer [dir-fn doc source]]
     [clojure.java.shell :refer [sh]]

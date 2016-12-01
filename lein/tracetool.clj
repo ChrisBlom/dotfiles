@@ -1,11 +1,11 @@
 (ns tracetool
   (:require
-    [clojure.pprint]
-    [clojure.string :as str]
-    [clojure.data :as d]))
+   [clojure.pprint]
+   [clojure.string :as str]
+   [clojure.data :as d]
+   [clojure.java.shell :as sh]))
 
 (defmacro show-env [] (println &env))
-
 
 (def pid
   "Get current process PID"
@@ -15,6 +15,20 @@
          (.getName)
          (clojure.string/split #"@")
          (first)))))
+
+(defn open-profiler
+  "open a profiler for the current process or a provided pid"
+  ([] (open-profiler (pid)))
+  ([pid]
+   (sh/sh "jvisualvm" "--openpid" (str pid))))
+
+(comment
+
+  (pid)
+
+  (open-profiler)
+
+  )
 
 (defn ppr
   ([title x]
@@ -89,6 +103,11 @@
            (println "---------------")
            (last vals#)))))
 
+(comment
+
+  (trace (+ 1 1))
+  )
+
 (defmacro label-trace [ label & vals]
   `(do (when *trace*
          (printf "--Trace: %s ---%n" ~label )
@@ -148,17 +167,19 @@
             '~name ~@outs)
            )))))
 
-(defmacro undef [name]
-  (ns-unmap (or (some-> name namespace symbol) *ns*)
-            name))
 (defn ll
   ([] (ll :warn))
   ([level]
    (set! *warn-on-reflection* false)
    ((var-get (resolve 'taoensso.timbre/set-level!)) level)))
 
+(defmacro undef [name]
+  (ns-unmap (or (some-> name namespace symbol) *ns*)
+            name))
 
-(defn clear-ns []
+(defn clear-ns
+  "unmap all entries, except for classes and clojure.core"
+  []
   (doall
    (for [ [s to] (.getMappings *ns*)
          :when (not (class? to))
@@ -167,45 +188,10 @@
           (.unmap *ns* s)
           s))))
 
-
 (defn diff
   ([before after] (zipmap [:before :after :same] (d/diff before after)))
   ([before-label after-label before after] (zipmap [before-label after-label] (d/diff before after)))
   ([before-label after-label same-label before after] (zipmap [before-label after-label same-label] (d/diff before after))))
-
-
-#_(defmacro add-lib [ [lib version] ]
-    (let [ coord   [lib version] ]
-      (assert symbol? lib)
-      (assert string? version)
-      (print "adding" coord "to classpath... ")
-      ;; add lib to classpath
-      (cemerick.pomegranate/add-dependencies
-       :coordinates [ coord]
-       :repositories {"clojars" "http://clojars.org/repo"
-                      "central" "http://repo1.maven.org/maven2/"})
-      (println "done")
-
-      ;; add lib to dependencies
-      (print "adding" coord "to project.clj... ")
-      (let [zright+ (fn [loc]
-                      (if-let [next (z/right loc)]
-                        (recur next)
-                        loc))]
-
-        (some-> "project.clj"
-                z/of-file
-                z/down
-                (z/find-value z/right :dependencies) ; find dependencies key
-                z/right ; move to dependencies list
-                z/down  ; move into dep list
-                zright+ ; mode to last element
-                (z/insert-right coord) ;; add coords
-                z/right
-                z/prepend-newline
-                z/->root-string
-                (->> (spit "project.clj"))))
-      (println "done")))
 
 ;; trace-let
 (defn- ->debug-sym [n] (symbol (str "<" (name n) ">")))
@@ -231,23 +217,25 @@
 
   )
 
+;;;;
+
 (defn ns->ms [nanos]
   (/ nanos 1000000.0))
 
 (defonce instrumented-vars
   (atom #{}))
 
-(defn instrumented? [v]
-  (boolean (::instrumented (meta v))))
+(defn timed? [v]
+  (boolean (::timed (meta v))))
 
-(defn uninstrument [v]
-  (when-let [original (::instrumented (meta v))]
+(defn untime! [v]
+  (when-let [original (::timed (meta v))]
     (do (alter-var-root v (constantly original))
         (swap! instrumented-vars conj v)
-        (alter-meta! v dissoc ::instrumented)
+        (alter-meta! v dissoc ::timed)
         :disabled)))
 
-(defn wrap-instrument [v store f]
+(defn wrap-timed [v store f]
   (fn [& args]
     (let [start (System/nanoTime)
           result (apply f args)
@@ -256,61 +244,62 @@
       (swap! store conj [start end])
       result)))
 
-(defn instrument [v]
-  (when-not (::instrumented (meta v))
+(defn time! [v]
+  (when-not (::timed (meta v))
     (let [original @v
           store (atom {})
-          instrumented (wrap-instrument v store original)]
+          instrumented (wrap-timed v store original)]
       (do (alter-var-root v (constantly instrumented))
           (swap! instrumented-vars conj v)
           (alter-meta! v assoc
-                       ::instrumented original
-                       ::store store)
-          :enabled))))
+                       ::timed original
+                       ::time-store store)
+          [:enabled-timing v]))))
 
+;; TODO percentiles
 (defn summary [p]
   (let [start (ns->ms (apply min (map first p)))
         end   (ns->ms (apply max (map second p)))
         durations (map (fn [[start end]] (- end start)) p)
         sums (apply + durations)]
     {:timespan (- end start)
+     :min (ns->ms (apply min durations))
+     :max (ns->ms (apply max durations))
      :duration-sums (ns->ms sums)
-     :mean-duration (ns->ms (/ sums
-                               (count durations)))}))
+     :mean-duration (ns->ms (/ sums (float (count durations))))}))
 
-(defn instrument-report [v]
-  (if-not (instrumented? v)
-    :not-instrumented
-    (summary @(::store (meta v)))))
+(defn times [v]
+  (if-not (timed? v)
+    :not-timed
+    (summary @(::time-store (meta v)))))
 
-(defn toggle-instrument [v]
+(defn toggle-timed! [v]
   (assert (var? v) "Can only instrument vars")
   (assert (fn? @v) "Can only instrument vars pointing to functions")
-  (if (instrumented? v)
-    (uninstrument v)
-    (instrument v)))
+  (if (timed? v)
+    (untime! v)
+    (time! v)))
 
-(defn uninstrument-all []
+(defn untime-all []
   (doseq [v @instrumented-vars]
-    (uninstrument v)))
+    (untime! v)))
 
-(defn uninstrument-ns [ns]
-  ( 'tracetool)
+(defn clear-times []
   (doseq [v @instrumented-vars]
-    (uninstrument v)))
+    (reset! (::time-store (meta v)) {})))
 
-(defn instrument-ns [ns]
+(defn time-ns! [ns]
   (for [v (vals (.getMappings (create-ns ns)))
         :when (var? v)
         :when (=   (.-name (.-ns v)) ns)
         :when (fn? @v)
         ]
-    (instrument v)))
+    (time! v)))
 
-(defn uninstrument-ns [ns]
+(defn untime-ns [ns]
   (for [v (vals (.getMappings (create-ns ns)))
         :when (var? v)
         :when (=   (.-name (.-ns v)) ns)
         :when (fn? @v)
         ]
-    (uninstrument v)))
+    (untime! v)))
