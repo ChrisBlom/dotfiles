@@ -1,0 +1,31 @@
+
+(require-extension parley)
+(require-extension parley-auto-completion)
+
+(let ((old (current-input-port)))
+     (current-input-port (make-parley-port old)))
+
+(define (delete-last-word line pos)
+  (let* ((del-pos (or (string-index-right
+                      line
+                      (char-set-union char-set:whitespace
+                                      char-set:punctuation)
+                      0
+                      pos)
+                     0))
+         (left-part (if (> del-pos 0) (string-take line del-pos)
+                    ""))
+         (npos (- pos (- pos
+                         del-pos))))
+    (values (string-append left-part (string-drop line pos))
+            npos)))
+
+(define (cw parley-state)
+  (receive (l p)
+           (delete-last-word (state-line parley-state)
+                             (state-pos parley-state))
+           (state-pos-set! parley-state p)
+           (state-line-set! parley-state l)
+           parley-state))
+
+(add-key-binding! #\x17 cw)
