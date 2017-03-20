@@ -1,6 +1,7 @@
-
 (require-extension parley)
 (require-extension parley-auto-completion)
+(require-extension apropos)
+(require-extension chicken-doc)
 
 (let ((old (current-input-port)))
      (current-input-port (make-parley-port old)))
