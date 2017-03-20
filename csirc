@@ -30,3 +30,11 @@
            parley-state))
 
 (add-key-binding! #\x17 cw)
+
+(completion-choices
+ (lambda (input position last-word)
+   (map symbol->string (apropos-list last-word))))
+
+(word-class '($ (+ (~ "()[]"))))
+
+(add-key-binding! #\tab auto-completion-handler)
