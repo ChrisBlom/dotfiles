@@ -7,7 +7,7 @@
 
  :cider
  {:plugins
-  [[cider/cider-nrepl "0.13.0"] ]
+  [[cider/cider-nrepl "0.14.0"]]
   :dependencies
   [[org.clojure/tools.nrepl "0.2.12"]]
                                         ; hide java icon in OSX dock
@@ -22,7 +22,7 @@
 
  :power
  {:plugins
-  [[cider/cider-nrepl "0.13.0"] ; cider repl integration
+  [[cider/cider-nrepl "0.14.0"] ; cider repl integration
    [refactor-nrepl "2.3.0-SNAPSHOT"]
    [lein-ancient "0.6.10"  :exclusions [org.clojure/clojure]] ; dependency update checker
    ]
