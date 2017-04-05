@@ -15,13 +15,11 @@ function sshec2-all --description "sshec2-all <instance-name> <commands>*"
 	echo "Running cmd: <$cmds> on "(count cmds)" instances"
 
 	set instances (ec2hosts $profile $name)
-	echo $instances
+
 	set j 1
 
-	set n 0
-	for i in $instances
-		set n (math "$n+1")
-	end
+	# count hostnames and trim result
+	set n (echo $instances | wc -w | xargs)
 
 	for i in $instances
 		set_color "red"

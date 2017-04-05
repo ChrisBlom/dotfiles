@@ -25,8 +25,9 @@ function ec2host
 	--output json \
 	--query 'Reservations[].Instances[].{Hostname:PublicDnsName,Name:[Tags[?Key==`Name`].Value][0][0]}')
 
-	set matched (echo $res | jq '.[].Name' -r | sort | uniq)
-	echo "Matched: " "$matched" >&2
+	echo "--- Matched: -------------------------------------------------------------------" >&2
+	echo $res | jq '.[].Name' -r | sort | uniq -c  >&2
+	echo "--------------------------------------------------------------------------------" >&2
 
 	echo $res | jq '.[].Hostname' -r
 
