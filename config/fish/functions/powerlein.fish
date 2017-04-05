@@ -1,3 +1,4 @@
 function powerlein
-        lein with-profile +power $argv
+	set-title (basename (PWD))
+	lein with-profile +power $argv
 end
