@@ -1,7 +1,11 @@
 function sshec2-all --description "sshec2-all <instance-name> <commands>*"
 
-	set name $argv[1]
 
+
+	set profile $argv[1]
+	set name $argv[2]
+
+	set --erase argv[1]
 	set --erase argv[1]
 
 	for i in $argv
@@ -10,7 +14,7 @@ function sshec2-all --description "sshec2-all <instance-name> <commands>*"
 
 	echo "Running cmd: <$cmds> on "(count cmds)" instances"
 
-	set instances (instance-dns $name)
+	set instances (ec2hosts $profile $name)
 	echo $instances
 	set j 1
 
