@@ -20,7 +20,7 @@ function ec2hosts
 	echo PATTERN $PATTERN >&2
 	# return hostnames of all instances of which the Name tag matches the pattern
 	set res (aws --profile $profile --region us-east-1 ec2 describe-instances \
-	--filters "Name=tag:Name,Values=*$PATTERN*" "Name=instance-state-name,Values=running" \
+	--filters "Name=tag:Name,Values=$PATTERN" "Name=instance-state-name,Values=running" \
 	--output json \
 	--query 'Reservations[].Instances[].{Hostname:PublicDnsName,Name:[Tags[?Key==`Name`].Value][0][0]}')
 
