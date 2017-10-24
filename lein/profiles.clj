@@ -23,9 +23,9 @@
 
  :power
  {:plugins
-  [[cider/cider-nrepl "0.14.0"] ; cider repl integration
+  [[cider/cider-nrepl "0.15.1"] ; cider repl integration
    ;[com.billpiel/sayid "0.0.14" :exclusions [org.clojure/tools.namespace]]
-   [refactor-nrepl "2.3.0-SNAPSHOT"]]
+   [refactor-nrepl "2.3.1"]]
 
   :jvm-opts ["-Dapple.awt.UIElement=true"  ; hide java icon in OSX dock
              "-XX:-OmitStackTraceInFastThrow"  ; DONT . OMIT . STACKTRACES!!!
