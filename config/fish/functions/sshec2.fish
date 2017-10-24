@@ -10,11 +10,13 @@ function sshec2 --description "sshec2 <instance-name> <commands>*"
 	 	set cmds "$cmds $i"
  	end
 
-	set instance (ec2host $profile $name)
+	if set instance (ec2hosts $profile $name | head -n1)
 
-	echo "Command: $cmds Instance: $name = $instance"
+		echo "Command: $cmds Instance: $name = $instance"
 
-	set-title "ssh "$name
-
-	ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -t ec2-user@$instance $cmds
+		set-title "ssh "$name
+		ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -t ec2-user@$instance $cmds
+	else
+		echo "no matches"
+	end
 end
