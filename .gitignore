@@ -8,3 +8,5 @@ config/gcloud
 /lein/.tracetool.clj.~undo-tree~
 /gitconfig
 /lein/self-installs/leiningen-2.5.0-standalone.jar
+/config/aws.env
+/config/hub
