@@ -9,7 +9,7 @@
  {:plugins
   [[cider/cider-nrepl "0.15.1"]]
   :dependencies
-  [[org.clojure/tools.nrepl "0.2.12"]]
+  [[org.clojure/tools.nrepl "0.2.13"]]
                                         ; hide java icon in OSX dock
   :jvm-opts ["-Dapple.awt.UIElement=true"]}
 
@@ -32,7 +32,7 @@
              ]
 
   :dependencies
-  [[org.clojure/tools.nrepl "0.2.12"]
+  [[org.clojure/tools.nrepl "0.2.13"]
    ;; [acyclic/squiggly-clojure "0.1.6"] ; linters for emacs
    ;;[org.clojure/tools.namespace "0.2.10"]
    ]

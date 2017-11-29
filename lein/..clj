@@ -648,14 +648,16 @@
 
 
 
-(defn methods [class]
+(defn methods [class & patterns]
   (let [class (if (class? class) class (.getClass class))]
     {class
      (into (sorted-map-by (fn [a b] (compare (pr-str a) (pr-str b))))
            (for [m  (.getMethods class)
                  :let [bm (bean m)
                        exn (:genericExceptionTypes bm)]
-                 :when (not (contains? #{"getClass" "notify" "notifyAll" "hashCode" "equals" "toString" "wait"} (:name bm)))]
+                 :when (not (contains? #{"getClass" "notify" "notifyAll" "hashCode" "equals" "toString" "wait"} (:name bm)))
+                 :when (every? #(re-find (re-pattern %) (:name bm) ) patterns)
+                 ]
              [(cons (symbol (str "." (:name bm)))
                     (map pp-class (:parameterTypes bm)))
               (cond-> [(:genericReturnType bm)]
@@ -663,3 +665,19 @@
 
 
 (.getMethods java.lang.String)
+
+
+
+(defmacro field [x sym]
+  `( ~(symbol (str "." sym)) ~x))
+
+(defn private-field [x sym]
+  (let [f (.. x getClass (getDeclaredField  (name sym)))]
+    (.setAccessible f true)
+    (.get f x)))
+
+
+(defn fields-map [x & fields]
+  (into {} (for [f fields]
+             [(keyword f)
+              (private-field x f)])))
