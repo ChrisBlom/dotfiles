@@ -152,8 +152,6 @@ source $OMF_PATH/init.fish
 
 fzf-key-bindings
 
-fundle plugin 'tuvistavie/fish-ssh-agent'
-
 # OPAM configuration
 # . /Users/chris/.opam/opam-init/init.fish > /dev/null 2> /dev/null or true
 
