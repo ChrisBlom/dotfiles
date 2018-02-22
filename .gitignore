@@ -1,9 +1,8 @@
 lein/.nrepl-port
 lein/repl-history
-config/env_vars
-config/fish/fish_history
-config/fish/fishd.b8e8564a5c38
-config/gcloud
+dot/config/env_vars
+dot/config/fish/fish_history
+dot/config/fish/fishd.b8e8564a5c38
 /lein/.profiles.clj.~undo-tree~
 /lein/.tracetool.clj.~undo-tree~
 /gitconfig

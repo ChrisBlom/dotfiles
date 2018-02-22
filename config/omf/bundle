@@ -1,6 +1,0 @@
-package docker-machine
-package emacs
-package fzf
-theme default
-theme eden
-theme fishbone
