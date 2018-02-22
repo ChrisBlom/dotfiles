@@ -70,12 +70,12 @@ end
 test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
 
 
-switch (docker-machine status default)
-	case Running
-		eval (docker-machine env default)
-	case '*'
-		echo "docker-machine default is down"
-end
+# switch (docker-machine status default)
+# 	case Running
+# 		eval (docker-machine env default)
+# 	case '*'
+# 		echo "docker-machine default is down"
+# end
 
 # Due to a bug of fish, we cannot use command substitution,
 # so we use temporary file instead
