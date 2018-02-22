@@ -70,11 +70,11 @@ end
 test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
 
 
-switch (docker-machine status docker-v1.11.0)
+switch (docker-machine status default)
 	case Running
-		eval (docker-machine env docker-v1.11.0)
+		eval (docker-machine env default)
 	case '*'
-		echo "Docker is down"
+		echo "docker-machine default is down"
 end
 
 # Due to a bug of fish, we cannot use command substitution,
@@ -141,3 +141,21 @@ if bind -M insert > /dev/null 2>&1
   bind -M insert \cr fzf-history-widget
   bind -M insert \ec fzf-cd-widget
 end
+
+# Path to Oh My Fish install.
+set -q XDG_DATA_HOME
+  and set -gx OMF_PATH "$XDG_DATA_HOME/omf"
+  or set -gx OMF_PATH "$HOME/.local/share/omf"
+
+# Load Oh My Fish configuration.
+source $OMF_PATH/init.fish
+
+fzf-key-bindings
+
+fundle plugin 'tuvistavie/fish-ssh-agent'
+
+# OPAM configuration
+# . /Users/chris/.opam/opam-init/init.fish > /dev/null 2> /dev/null or true
+
+
+bash /usr/local/bin/virtualenvwrapper.sh
