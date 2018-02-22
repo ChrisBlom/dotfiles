@@ -13,4 +13,5 @@ dot/config/fish/fishd.b8e8564a5c38
 *.#*
 /dot/config/aws.env
 *.jar
-dot/lein/repl-history
+/dot/lein/repl-history
+/dot/config/hub
