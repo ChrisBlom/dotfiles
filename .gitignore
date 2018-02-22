@@ -9,3 +9,8 @@ dot/config/fish/fishd.b8e8564a5c38
 /lein/self-installs/leiningen-2.5.0-standalone.jar
 /config/aws.env
 /config/hub
+*.fish#
+*.#*
+/dot/config/aws.env
+*.jar
+dot/lein/repl-history
