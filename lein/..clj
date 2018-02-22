@@ -340,16 +340,34 @@
 (defmacro dd
   "debug def"
   ([n]
+   (assert (symbol? n))
    `(let [x# ~n]
       (let [g# (def ~(->debug-sym n) x#)]
         (swap! debug-vars conj g#))
       x#))
   ([n expr]
+   (assert (symbol? n))
    `(let [x# ~expr]
       (let [g# (def ~(->debug-sym n) x#)]
         (swap! debug-vars conj g#))
       x#)))
 
+
+(defmacro dd-try
+  "run body in try...catch, store any exception in _e"
+  ([expr]
+   `(let [x# (try ~expr (catch Exception e#
+                          (let [v# (def _e e#)]
+                            (swap! debug-vars conj v#))
+                          (throw e#)))]
+
+      x#))
+  ([n expr]
+   (assert (symbol? n))
+   `(try ~expr (catch Exception e#
+                 (let [v# (def ~(->debug-sym n) e#)]
+                   (swap! debug-vars conj v#))
+                 (throw e#)))))
 
 (defmacro dd-let
   {:style/indent [1]}
