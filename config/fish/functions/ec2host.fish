@@ -29,6 +29,6 @@ function ec2host
 	echo $res | jq '.[].Name' -r | sort | uniq -c  >&2
 	echo "--------------------------------------------------------------------------------" >&2
 
-	echo $res | jq '.[].Hostname' -r
+	echo $res | jq '.[].Hostname' -r | tr -d '\n'
 
 end
