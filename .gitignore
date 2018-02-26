@@ -15,3 +15,5 @@ dot/config/fish/fishd.b8e8564a5c38
 *.jar
 /dot/lein/repl-history
 /dot/config/hub
+/config/fish/fish_history
+/config/env_vars
