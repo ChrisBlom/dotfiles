@@ -1,2 +1,33 @@
+[user]
+	name = Chris Blom
+	email = chris.blom@millmobile.com
+[push]
+	default = simple
 [core]
+	editor = vim
 	excludesfile = /Users/chris/.gitignore
+[credential]
+	helper = osxkeychain
+[diff]
+	tool = diffmerge
+[difftool "diffmerge"]
+	cmd = diffmerge \"$LOCAL\" \"$REMOTE\"
+[merge]
+	tool = diffmerge
+
+[mergetool "diffmerge"]
+	cmd = "diffmerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$(if test -f \"$BASE\"; then echo \"$BASE\"; else echo \"$LOCAL\"; fi)\" \"$REMOTE\""
+	trustExitCode = true
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path =
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+
+[init]
+	templatedir = /Users/chris/git/dotfiles/git/templatedir
+[github]
+	user = ChrisBlom
+[http]
+	postBuffer = 1048576000

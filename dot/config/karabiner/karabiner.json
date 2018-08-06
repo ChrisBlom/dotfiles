@@ -147,7 +147,6 @@
                             }
                         ]
                     },
-
                     {
                         "description": "Enter to Alt on single press, Enter on press and hold.",
                         "manipulators": [
@@ -177,33 +176,41 @@
                     {
                         "description": "Better Shifting: Parentheses on shift keys",
                         "manipulators": [
-			    {
+                            {
                                 "from": {
                                     "key_code": "left_shift",
-				    "modifiers": {"mandatory": ["left_control"]}
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "left_control"
+                                        ]
+                                    }
                                 },
                                 "to": [
                                     {
                                         "key_code": "9",
                                         "modifiers": [
                                             "left_shift",
-					    "left_control"
+                                            "left_control"
                                         ]
                                     }
                                 ],
                                 "type": "basic"
                             },
-			    {
+                            {
                                 "from": {
                                     "key_code": "right_shift",
-				    "modifiers": {"mandatory": ["left_control"]}
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "left_control"
+                                        ]
+                                    }
                                 },
                                 "to": [
                                     {
                                         "key_code": "0",
                                         "modifiers": [
                                             "right_shift",
-					    "left_control"
+                                            "left_control"
                                         ]
                                     }
                                 ],

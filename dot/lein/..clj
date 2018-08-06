@@ -71,7 +71,8 @@
   "open jvisualvm profiler for the current process or a provided pid"
   ([] (jvisualvm (pid)))
   ([pid]
-   (sh "jvisualvm --openpid" (str pid))))
+   (clojure.java.shell/sh "jvisualvm --openpid" (str pid))))
+
 
 (comment
 
@@ -351,6 +352,26 @@
       (let [g# (def ~(->debug-sym n) x#)]
         (swap! debug-vars conj g#))
       x#)))
+
+(defmacro dd-once
+  "debug def"
+  ([n]
+   (assert (symbol? n))
+
+   `(let [v# (def ~n)]
+      (when-not (.hasRoot v#)
+        (let [x# ~n]
+          (let [g# (def ~(->debug-sym n) x#)]
+            (swap! debug-vars conj g#))
+          x#))))
+  ([n expr]
+   (assert (symbol? n))
+   `(let [v# (def ~n)]
+      (when-not (.hasRoot v#)
+        (let [x# ~expr]
+          (let [g# (def ~(->debug-sym n) x#)]
+            (swap! debug-vars conj g#))
+          x#)))))
 
 
 (defmacro dd-try

@@ -7,7 +7,7 @@
 
  :cider
  {:plugins
-  [[cider/cider-nrepl "0.16.0"]]
+  [[cider/cider-nrepl "0.17.0"]]
   :dependencies
   [[org.clojure/tools.nrepl "0.2.13"]]
                                         ; hide java icon in OSX dock
@@ -15,7 +15,7 @@
 
  :check
  {:plugins
-  [[jonase/eastwood "0.2.3" :exclusions [org.clojure/clojure]]
+  [[jonase/eastwood "0.2.6" :exclusions [org.clojure/clojure]]
    [lein-kibit "0.0.8" :exclusions [org.clojure/clojure]] ; static code analysis
    [lein-cljfmt "0.5.3"]
    [lein-ancient "0.6.10"  :exclusions [org.clojure/clojure]] ; dependency update checker
@@ -23,10 +23,10 @@
 
  :power
  {:plugins
-  [[cider/cider-nrepl "0.16.0"] ; cider repl integration
+  [[cider/cider-nrepl "0.18.0-SNAPSHOT"] ; cider repl integration
    ;[com.billpiel/sayid "0.0.14" :exclusions [org.clojure/tools.namespace]]
-   [refactor-nrepl "2.3.1"]
-   [lein-localrepo "0.5.4"]
+   [refactor-nrepl "2.4.0-SNAPSHOT"]
+   ;[lein-localrepo "0.5.4"]
    ]
 
   :jvm-opts ["-Dapple.awt.UIElement=true"  ; hide java icon in OSX dock

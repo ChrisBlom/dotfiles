@@ -1,11 +1,11 @@
 # set all env vars t:
-for pair in (cat ~/.config/env_vars);
-        set var (echo $pair | awk '{print $1}')
-        set value (echo $pair | awk '{print $2}')
-        #echo "setting $var to $value"
-        set -x $var $value
-        launchctl setenv $var $value
-end;
+# for pair in (cat ~/.config/env_vars);
+#         set var (echo $pair | awk '{print $1}')
+#         set value (echo $pair | awk '{print $2}')
+#         #echo "setting $var to $value"
+#         set -x $var $value
+#         launchctl setenv $var $value
+# end;
 
 # Use 256 color terminal
 set -x TERM xterm-256color
@@ -48,17 +48,13 @@ function await --description 'try to run first argument until it succeed, with p
          while not eval $argv[1] ; sleep 5 ; end
 end
 
-function tabnam
+function tabname
          set name $argv[1]
          printf "\e]1;$name\a"
 end
 
 function docker-clean
          docker rmi (docker images | tail -n+1 | grep '<none>' | awk '{print $3}')
-end
-
-function docker-viz
-         docker images -v | dot -Tsvg > /tmp/images.svg ; open /tmp/images.svg
 end
 
 
@@ -68,7 +64,6 @@ function fish_title
 end
 
 test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
-
 
 # switch (docker-machine status default)
 # 	case Running
@@ -154,6 +149,4 @@ fzf-key-bindings
 
 # OPAM configuration
 # . /Users/chris/.opam/opam-init/init.fish > /dev/null 2> /dev/null or true
-
-
-bash /usr/local/bin/virtualenvwrapper.sh
+set -g fish_user_paths "/usr/local/opt/sqlite/bin" $fish_user_paths
